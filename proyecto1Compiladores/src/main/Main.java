@@ -6,7 +6,9 @@
 package main;
 
 import clases.Comandos;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -24,6 +26,10 @@ public class Main {
     public static void main(String[] args) {
         // TODO code application logic here
         Comandos cm = new Comandos();
+
+//        cm.setDirectorioActual("C:\\");
+//        System.out.println(cm.getDirectorioActual());
+
 //        System.out.println(cm.getDirectorioActual());
 //        System.out.println(cm.crearCarpeta("Juan"));
 //        System.out.println(cm.renombrarCarpeta("Juan", "Pedro"));
@@ -34,14 +40,13 @@ public class Main {
 //        System.out.println(cm.getDirectorioActual());
 //        cm.regresarUnDirectorio();
 //        System.out.println(cm.getDirectorioActual());
-        cm.setDirectorioActual("C:\\");
-        System.out.println(cm.getDirectorioActual());
-        cm.crearArchivo("jhonatan.txt");
-        cm.renombrarArchivo("jhonatan.txt", "jhon.txt");
-        cm.renombrarArchivo("jhon.txt", "jhony.txt");
-        cm.editarArchivo("jhony.txt", "Hola");
-        cm.eliminarArchivo("jhony.txt");
-
+//        cm.setDirectorioActual("C:\\");
+//        System.out.println(cm.getDirectorioActual());
+//        cm.crearArchivo("jhonatan.txt");
+//        cm.renombrarArchivo("jhonatan.txt", "jhon.txt");
+//        cm.renombrarArchivo("jhon.txt", "jhony.txt");
+//        cm.editarArchivo("jhony.txt", "Hola");
+//        cm.eliminarArchivo("jhony.txt");
 //
         System.out.println("Empezamos el programa");
         String entradaTeclado = "";

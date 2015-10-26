@@ -7,6 +7,7 @@ package clases;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -39,6 +40,10 @@ public class Comandos {
     File archivo;
 
     public String getDirectorioActual() {
+//        archivo= new File(directorioActual);
+//        archivo.setExecutable(true);
+//        archivo.setReadable(true);
+//        archivo.setWritable(true);
         return directorioActual;
     }
 
@@ -200,6 +205,8 @@ public class Comandos {
                 bw = new BufferedWriter(new FileWriter(archivo));
                 bw.close();
                 System.out.println("Archivo " + nombre + " creado con exito");
+            } catch (FileNotFoundException fe) {
+                System.out.println("error al crear el archivo ! " + fe.getMessage());
             } catch (IOException ex) {
                 Logger.getLogger(Comandos.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -230,6 +237,8 @@ public class Comandos {
                 bw = new BufferedWriter(new FileWriter(archivoNuevo));
                 bw.close();
                 System.out.println("Se cambio el nombre del archivo " + nombreAntiguo + " a " + nombreNuevo + ".");
+            } catch (FileNotFoundException fe) {
+                System.out.println("error al renombrar el archivo ! " + fe.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -250,6 +259,8 @@ public class Comandos {
             bw.write(texto);
             bw.close();
             System.out.println("Archivo Editado");
+        } catch (FileNotFoundException fe) {
+            System.out.println("error al editar el archivo ! " + fe.getMessage());
         } catch (IOException ex) {
             Logger.getLogger(Comandos.class.getName()).log(Level.SEVERE, null, ex);
         }
