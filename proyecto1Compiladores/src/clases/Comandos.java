@@ -5,8 +5,12 @@
  */
 package clases;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FilenameFilter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,15 +20,23 @@ public class Comandos {
 //    https://sekthdroid.wordpress.com/2013/02/01/navegacion-de-archivos-y-io-en-java/
 //    http://censorcosmico.blogspot.com/2012/04/navegar-por-los-directorios.html
 
+    //variables para manejo de carpetas
     String regresar_directorio = "cd..";
     String avanzar_directorio = "cd";
     String crear_directorio = "crDir";
     String eliminar_directorio = "elDir";
     String renombrar_directorio = "rmDir";
     String listar_directorio = "listDir";
-    String buscar_directorio = "buscarDir";
+    String buscar_directorio = "brDir";
     String directorioActual;
     File carpeta;
+
+    //variables para manejo de archivos
+    String crear_archivo = "crArch";
+    String eliminar_archivo = "elArch";
+    String renombrar_archivo = "rmArch";
+    String buscar_archivo = "brArchivo";
+    File archivo;
 
     public String getDirectorioActual() {
         return directorioActual;
@@ -128,7 +140,7 @@ public class Comandos {
             if (directorio != null) {
                 Boolean busqueda = false;
                 for (int x = 0; x < directorio.length; x++) {
-                    busqueda = directorio[x].contains(nombre)||directorio[x].toLowerCase().contains(nombre.toLowerCase());
+                    busqueda = directorio[x].contains(nombre) || directorio[x].toLowerCase().contains(nombre.toLowerCase());
                     if (busqueda) {
                         break;
                     }
@@ -176,9 +188,131 @@ public class Comandos {
 
     }
 
+    public void crearArchivo(String nombre) {
+        if (!nombre.contains(".txt")) {
+            nombre = nombre + ".txt";
+        }
+
+        archivo = new File(getDirectorioActual() + "\\" + nombre);
+        BufferedWriter bw;
+        if (!archivo.exists()) {
+            try {
+                bw = new BufferedWriter(new FileWriter(archivo));
+                bw.close();
+                System.out.println("Archivo " + nombre + " creado con exito");
+            } catch (IOException ex) {
+                Logger.getLogger(Comandos.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            System.out.println("Error!. El Archivo " + nombre + " ya existe.");
+
+        }
+
+    }
+
+    public void renombrarArchivo(String nombreAntiguo, String nombreNuevo) {
+        if (!nombreAntiguo.contains(".txt")) {
+            nombreAntiguo = nombreAntiguo + ".txt";
+        }
+        if (!nombreNuevo.contains(".txt")) {
+            nombreNuevo = nombreNuevo + ".txt";
+        }
+        File archivoAntiguo = new File(getDirectorioActual() + "\\" + nombreAntiguo);
+        File archivoNuevo = new File(getDirectorioActual() + "\\" + nombreNuevo);
+        BufferedWriter bw1;
+        BufferedWriter bw;
+
+        if (archivoNuevo.exists()) {
+            System.out.println("El archivo " + nombreNuevo + " ya existe.");
+        } else if (archivoAntiguo.exists()) {
+            try {
+                archivoAntiguo.renameTo(archivoNuevo);
+                bw = new BufferedWriter(new FileWriter(archivoNuevo));
+                bw.close();
+                System.out.println("Se cambio el nombre del archivo " + nombreAntiguo + " a " + nombreNuevo + ".");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("La carpeta que quiere renombrar no existe.");
+        }
+
+    }
+
+    public void editarArchivo(String nombre, String texto) {
+        if (!nombre.contains(".txt")) {
+            nombre = nombre + ".txt";
+        }
+        try {
+            File archivo = new File(getDirectorioActual() + "\\" + nombre);
+            BufferedWriter bw;
+            bw = new BufferedWriter(new FileWriter(archivo));
+            bw.write(texto);
+            bw.close();
+            System.out.println("Archivo Editado");
+        } catch (IOException ex) {
+            Logger.getLogger(Comandos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void eliminarArchivo(String nombre) {
+        archivo = new File(this.getDirectorioActual() + "\\" + nombre);
+        System.out.println(archivo.getAbsolutePath());
+        if (archivo.exists()) {
+            try {
+
+                System.out.println("Se elimino el archivo " + nombre + ".");
+                archivo.delete();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("El archivo que quiere eliminar no existe.");
+        }
+
+    }
+
+    public void buscarArchivo(String nombre) {
+        String direcctorio = getDirectorioActual();
+        archivo = new File(direcctorio);
+        String[] directorio = archivo.list();
+
+        if (archivo.exists()) {
+            if (directorio != null) {
+                Boolean busqueda = false;
+                for (int x = 0; x < directorio.length; x++) {
+                    busqueda = directorio[x].contains(nombre) || directorio[x].toLowerCase().contains(nombre.toLowerCase());
+                    if (busqueda) {
+                        break;
+                    }
+                }
+                if (busqueda) {
+                    System.out.println("Coincidencias:");
+                    for (int x = 0; x < directorio.length; x++) {
+                        busqueda = directorio[x].contains(nombre);
+                        if (busqueda) {
+                            System.out.println(directorio[x]);
+
+                        }
+                    }
+                } else {
+                    System.out.println("No hay coincidencias.");
+
+                }
+
+            } else {
+                System.out.println("El archivo no fue encontrado.");
+            }
+        } else {
+            System.out.println("El archivo no existe.");
+        }
+    }
+
     public void ejecutarComado(String comando, String parametro1, String parametro2) {
         if (comando.equals(this.renombrar_directorio)) {
             renombrarCarpeta(parametro1, parametro2);
+        } else if (comando.equals(this.renombrar_archivo)) {
+            renombrarArchivo(parametro1, parametro2);
         } else {
             System.out.println("\"" + comando + " " + parametro1 + " " + parametro1 + "\" no se reconoce como un comando o no es correcto.");
 
@@ -188,10 +322,16 @@ public class Comandos {
     public void ejecutarComado(String comando, String nombre) {
         if (comando.equals(this.crear_directorio)) {
             crearCarpeta(nombre);
+        } else if (comando.equals(this.crear_archivo)) {
+            crearArchivo(nombre);
         } else if (comando.equals(this.eliminar_directorio)) {
             eliminarCarpeta(nombre);
+        } else if (comando.equals(this.eliminar_archivo)) {
+            eliminarArchivo(nombre);
         } else if (comando.equals(this.buscar_directorio)) {
             buscarDirectorio(nombre);
+        } else if (comando.equals(this.buscar_archivo)) {
+            buscarArchivo(nombre);
         } else if (comando.equals(this.avanzar_directorio)) {
             avanzarUnDirectorio(nombre);
         } else {

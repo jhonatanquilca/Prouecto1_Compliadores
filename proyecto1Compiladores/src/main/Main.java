@@ -7,7 +7,10 @@ package main;
 
 import clases.Comandos;
 import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -31,11 +34,18 @@ public class Main {
 //        System.out.println(cm.getDirectorioActual());
 //        cm.regresarUnDirectorio();
 //        System.out.println(cm.getDirectorioActual());
+        cm.setDirectorioActual("C:\\");
+        System.out.println(cm.getDirectorioActual());
+        cm.crearArchivo("jhonatan.txt");
+        cm.renombrarArchivo("jhonatan.txt", "jhon.txt");
+        cm.renombrarArchivo("jhon.txt", "jhony.txt");
+        cm.editarArchivo("jhony.txt", "Hola");
+        cm.eliminarArchivo("jhony.txt");
+
 //
         System.out.println("Empezamos el programa");
         String entradaTeclado = "";
         Scanner entradaEscaner = new Scanner(System.in); //Creación de un objeto Scanner
-
         while (true) {
             System.out.print(cm.getDirectorioActual() + ">");
             entradaTeclado = entradaEscaner.nextLine(); //Invocamos un método sobre un objeto Scanner
