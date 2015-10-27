@@ -5,6 +5,8 @@
  */
 package vistas;
 
+import clases.Comandos;
+
 /**
  *
  * @author workstation
@@ -14,8 +16,13 @@ public class Pricipal extends javax.swing.JFrame {
     /**
      * Creates new form Pricipal
      */
+    Comandos cmdos = new Comandos();
+    String comando = "";
+
     public Pricipal() {
         initComponents();
+        txtAreaConsola.setText(cmdos.getDirectorioActual() + ">");
+
     }
 
     /**
@@ -32,7 +39,7 @@ public class Pricipal extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtAreaConsola = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTree1 = new javax.swing.JTree();
@@ -45,9 +52,17 @@ public class Pricipal extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        txtAreaConsola.setColumns(20);
+        txtAreaConsola.setRows(5);
+        txtAreaConsola.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtAreaConsolaKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtAreaConsolaKeyTyped(evt);
+            }
+        });
+        jScrollPane3.setViewportView(txtAreaConsola);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -138,6 +153,51 @@ public class Pricipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtAreaConsolaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAreaConsolaKeyTyped
+        // TODO add your handling code here:
+//        System.out.println(evt.getKeyChar());
+
+
+    }//GEN-LAST:event_txtAreaConsolaKeyTyped
+
+    private void txtAreaConsolaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAreaConsolaKeyPressed
+        // TODO add your handling code here:
+        String letra = evt.getKeyChar() + "";
+        System.out.println(evt.getExtendedKeyCode());
+
+        if (evt.getExtendedKeyCode() == 10) {
+//            System.out.print(cmdos.getDirectorioActual() + ">");
+            String entradaTeclado = comando; //Invocamos un método sobre un objeto Scanner
+            String[] comandoCompleto = entradaTeclado.split(" ");
+            switch (comandoCompleto.length) {
+
+                case 1:
+                    if (comandoCompleto[0].equals("")) {
+                        break;
+                    }
+
+                    txtAreaConsola.setText(txtAreaConsola.getText() + cmdos.ejecutarComado(comandoCompleto[0]));
+                    break;
+                case 2:
+                     txtAreaConsola.setText(txtAreaConsola.getText() +cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1]));
+
+                    break;
+                case 3:
+                     txtAreaConsola.setText(txtAreaConsola.getText() +cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1], comandoCompleto[2]));
+
+                    break;
+                default:
+
+            }
+            txtAreaConsola.setText(txtAreaConsola.getText() + cmdos.getDirectorioActual() + ">");
+
+        } else if (!letra.equals("")) {
+            comando += evt.getKeyChar();
+            System.out.println(comando);
+        }
+
+    }//GEN-LAST:event_txtAreaConsolaKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -182,8 +242,8 @@ public class Pricipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTree jTree1;
+    private javax.swing.JTextArea txtAreaConsola;
     // End of variables declaration//GEN-END:variables
 }
