@@ -6,6 +6,7 @@
 package vistas;
 
 import clases.Comandos;
+import java.awt.Color;
 import javax.swing.JTextArea;
 
 /**
@@ -23,6 +24,7 @@ public class Pricipal extends javax.swing.JFrame {
     public Pricipal() {
         initComponents();
         txtAreaConsola.setText(cmdos.getDirectorioActual() + ">");
+        
 
     }
 
@@ -53,8 +55,12 @@ public class Pricipal extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
+        txtAreaConsola.setBackground(new java.awt.Color(0, 0, 0));
         txtAreaConsola.setColumns(20);
+        txtAreaConsola.setFont(new java.awt.Font("Calibri", 0, 13)); // NOI18N
+        txtAreaConsola.setForeground(new java.awt.Color(255, 255, 255));
         txtAreaConsola.setRows(5);
+        txtAreaConsola.setCaretColor(new java.awt.Color(255, 255, 255));
         txtAreaConsola.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtAreaConsolaKeyPressed(evt);
