@@ -21,6 +21,15 @@ public class Comandos {
 //    https://sekthdroid.wordpress.com/2013/02/01/navegacion-de-archivos-y-io-en-java/
 //    http://censorcosmico.blogspot.com/2012/04/navegar-por-los-directorios.html
 
+    String limpiar_pantalla = "cls";
+
+    public String getLimpiar_pantalla() {
+        return limpiar_pantalla;
+    }
+
+    public void setLimpiar_pantalla(String limpiar_pantalla) {
+        this.limpiar_pantalla = limpiar_pantalla;
+    }
     //variables para manejo de carpetas
     String regresar_directorio = "cd..";
     String avanzar_directorio = "cd";
@@ -196,10 +205,11 @@ public class Comandos {
 
         if (direccion.lastIndexOf("\\") == -1) {
             setDirectorioActual(getDirectorioActual() + "\\");
-            return getDirectorioActual();
+//            return getDirectorioActual();
+            return "";
         } else {
             setDirectorioActual(direccion.substring(0, direccion.lastIndexOf("\\")) + (direccion.lastIndexOf("\\") == 2 ? "\\" : ""));
-            return getDirectorioActual();
+            return "";
         }
     }
 
@@ -208,7 +218,8 @@ public class Comandos {
         String direccion = getDirectorioActual();
         if (carpeta.exists()) {
             setDirectorioActual(carpeta.getAbsolutePath());
-            return getDirectorioActual();
+//            return getDirectorioActual();
+            return "";
         } else {
             System.out.println("El directorio al que trata de acceder no existe.");
             return "El directorio al que trata de acceder no existe.";
@@ -400,9 +411,13 @@ public class Comandos {
             return listarDirectorio();
         } else if (comando.equals(this.avanzar_directorio)) {
             System.out.println(getDirectorioActual());
-            return getDirectorioActual();
+//            return getDirectorioActual();
+            return "";
         } else if (comando.equals(this.regresar_directorio)) {
             return regresarUnDirectorio();
+
+        } else if (comando.equals(this.limpiar_pantalla)) {
+            return this.limpiar_pantalla;
 
         } else {
             System.out.println();

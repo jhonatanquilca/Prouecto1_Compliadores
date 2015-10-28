@@ -6,6 +6,7 @@
 package vistas;
 
 import clases.Comandos;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -163,38 +164,67 @@ public class Pricipal extends javax.swing.JFrame {
     private void txtAreaConsolaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAreaConsolaKeyPressed
         // TODO add your handling code here:
         String letra = evt.getKeyChar() + "";
-        System.out.println(evt.getExtendedKeyCode());
-
+//        System.out.println(evt.getExtendedKeyCode());
+        String respuesta = "";
         if (evt.getExtendedKeyCode() == 10) {
 //            System.out.print(cmdos.getDirectorioActual() + ">");
+            comando = txtAreaConsola.getText().substring(txtAreaConsola.getText().lastIndexOf(">") + 1, txtAreaConsola.getText().length());
             String entradaTeclado = comando; //Invocamos un método sobre un objeto Scanner
             String[] comandoCompleto = entradaTeclado.split(" ");
+//            System.out.println(comandoCompleto.length);
             switch (comandoCompleto.length) {
-
                 case 1:
                     if (comandoCompleto[0].equals("")) {
                         break;
                     }
+                    respuesta = cmdos.ejecutarComado(comandoCompleto[0]);
+                    if (respuesta.equals(cmdos.getLimpiar_pantalla())) {
+                        txtAreaConsola.setText(null);
+                        System.out.println("entro");
+                    } else if (!respuesta.equals("")) {
 
-                    txtAreaConsola.setText(txtAreaConsola.getText() + cmdos.ejecutarComado(comandoCompleto[0]));
+                        txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+
+                    }
+
                     break;
                 case 2:
-                     txtAreaConsola.setText(txtAreaConsola.getText() +cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1]));
+                    respuesta = cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1]);
+                    if (!respuesta.equals("")) {
+
+                        txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+                    }
 
                     break;
+
                 case 3:
-                     txtAreaConsola.setText(txtAreaConsola.getText() +cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1], comandoCompleto[2]));
+                    respuesta = cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1], comandoCompleto[2]);
+                    if (!respuesta.equals("")) {
+
+                        txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+                    }
 
                     break;
                 default:
 
             }
-            txtAreaConsola.setText(txtAreaConsola.getText() + cmdos.getDirectorioActual() + ">");
+//            System.out.println(letra.equals(""));
+            comando = "";
+            if (comando.equals("")) {
+                String textoAnteriro = txtAreaConsola.getText();
 
-        } else if (!letra.equals("")) {
-            comando += evt.getKeyChar();
-            System.out.println(comando);
+                txtAreaConsola.setText(textoAnteriro + (!textoAnteriro.equals("")?"\n":"") + cmdos.getDirectorioActual() + ">");
+            }
+
+            int cartet = txtAreaConsola.getText().lastIndexOf("");
+            txtAreaConsola.setCaretPosition(cartet + 1);
+
+
         }
+//        else if (!letra.equals("") && evt.getExtendedKeyCode() != 8 && !letra.equals("￿")) {
+//            comando += evt.getKeyChar();
+//            System.out.println(comando);
+//        }
 
     }//GEN-LAST:event_txtAreaConsolaKeyPressed
 
