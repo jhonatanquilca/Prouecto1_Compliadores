@@ -19,11 +19,13 @@ public class Pricipal extends javax.swing.JFrame {
      * Creates new form Pricipal
      */
     Comandos cmdos = new Comandos();
+
     String comando = "";
     boolean onEdit = false;
 
     public Pricipal() {
         initComponents();
+        cmdos.setDirectorioActual("C:\\");
         txtAreaConsola.setText(cmdos.getDirectorioActual() + ">");
 
     }
@@ -132,7 +134,7 @@ public class Pricipal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Visual", jPanel2);
 
-        jLabel1.setText("jLabel1");
+        jLabel1.setText("Comiladores");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -197,10 +199,13 @@ public class Pricipal extends javax.swing.JFrame {
                 case 2:
                     respuesta = cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1]);
 
-                    if (comandoCompleto[0].equals(cmdos.getEditar_contenido_archivo())) {
+                    if (comandoCompleto[0].equals(cmdos.getEditar_contenido_archivo()) && !respuesta.equals("El archivo que quiere editar no existe.")) {
                         onEdit = true;
-                        txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+//                        System.out.println("entro");
+                        String resp = respuesta.equals("null") ? "" : respuesta;
+                        txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + resp);
                     } else if (!respuesta.equals("")) {
+
                         txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
                     }
 

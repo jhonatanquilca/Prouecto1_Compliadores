@@ -390,6 +390,37 @@ public class Comandos {
         if (archivo.exists()) {
             try {
 
+                File archivo = null;
+                FileReader fr = null;
+                BufferedReader br = null;
+
+//                try {
+//         // Apertura del fichero y creacion de BufferedReader para poder
+//                    // hacer una lectura comoda (disponer del metodo readLine()).
+//                    archivo = new File("C:\\archivo.txt");
+//                    fr = new FileReader(archivo);
+//                    br = new BufferedReader(fr);
+//
+//                    // Lectura del fichero
+//                    String linea;
+//                    while ((linea = br.readLine()) != null) {
+//                        System.out.println(linea);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                } finally {
+//         // En el finally cerramos el fichero, para asegurarnos
+//                    // que se cierra tanto si todo va bien como si salta 
+//                    // una excepcion.
+//                    try {
+//                        if (null != fr) {
+//                            fr.close();
+//                        }
+//                    } catch (Exception e2) {
+//                        e2.printStackTrace();
+//                    }
+//                }
+
                 System.out.println(archivo.toString());
                 BufferedReader bf = new BufferedReader(new FileReader(archivo));
                 String sCadena = "";
@@ -400,15 +431,13 @@ public class Comandos {
                 bf.close();
 
 //                if (sCadena.equals("")) {
-                   
 //                    return "Presione Clt+g para guardar.\n"
 //                            + "Presione Clt+X para salir sin guardar.\n"
 //                            + "---------------------------";
 //                } else {
-                
-                    return "Presione Clt+g para guardar.\n"
-                            + "Presione Clt+X para salir sin guardar.\n"
-                            + "---------------------------\n" + sCadena;
+                return "Presione Clt+g para guardar.\n"
+                        + "Presione Clt+X para salir sin guardar.\n"
+                        + "---------------------------\n" + sCadena;
 //                }
 
             } catch (NullPointerException e) {
