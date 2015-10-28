@@ -5,9 +5,11 @@
  */
 package clases;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -42,10 +44,20 @@ public class Comandos {
     File carpeta;
 
     //variables para manejo de archivos
-    String crear_archivo = "crArch";
-    String eliminar_archivo = "elArch";
-    String renombrar_archivo = "rmArch";
-    String buscar_archivo = "brArchivo";
+    String crear_archivo = "crAr";
+    String eliminar_archivo = "elAr";
+    String renombrar_archivo = "rmAr";
+    String buscar_archivo = "brAr";
+    String editar_contenido_archivo = "editAr";
+
+    public String getEditar_contenido_archivo() {
+        return editar_contenido_archivo;
+    }
+
+    public void setEditar_contenido_archivo(String editar_contenido_archivo) {
+        this.editar_contenido_archivo = editar_contenido_archivo;
+    }
+
     File archivo;
 
     public String getDirectorioActual() {
@@ -73,9 +85,9 @@ public class Comandos {
         carpeta = new File(this.getDirectorioActual() + "\\" + nombre);
         if (!carpeta.exists()) {
             try {
-                System.out.println("Carpeta " + nombre + " creada con exito;");
+                System.out.println("Carpeta " + nombre + " creada con exito");
                 carpeta.mkdir();
-                return "Carpeta " + nombre + " creada con exito;";
+                return "Carpeta " + nombre + " creada con exito";
             } catch (Exception e) {
                 e.printStackTrace();
                 return "";
@@ -372,6 +384,47 @@ public class Comandos {
         }
     }
 
+    private String getContentArchivo(String nombre) {
+        archivo = new File(this.getDirectorioActual() + "\\" + nombre);
+        System.out.println(archivo.getAbsolutePath());
+        if (archivo.exists()) {
+            try {
+
+                System.out.println(archivo.toString());
+                BufferedReader bf = new BufferedReader(new FileReader(archivo));
+                String sCadena = "";
+                while ((sCadena = bf.readLine()) != null) {
+
+                    sCadena += sCadena + "";
+                }
+                bf.close();
+
+//                if (sCadena.equals("")) {
+                   
+//                    return "Presione Clt+g para guardar.\n"
+//                            + "Presione Clt+X para salir sin guardar.\n"
+//                            + "---------------------------";
+//                } else {
+                
+                    return "Presione Clt+g para guardar.\n"
+                            + "Presione Clt+X para salir sin guardar.\n"
+                            + "---------------------------\n" + sCadena;
+//                }
+
+            } catch (NullPointerException e) {
+                return "Presione Clt+g para guardar.\n"
+                        + "Presione Clt+X para salir sin guardar.\n"
+                        + "---------------------------";
+            } catch (Exception e) {
+                e.printStackTrace();
+                return "error!";
+            }
+        } else {
+            System.out.println("El archivo que quiere editar no existe.");
+            return "El archivo que quiere editar no existe.";
+        }
+    }
+
     public String ejecutarComado(String comando, String parametro1, String parametro2) {
         if (comando.equals(this.renombrar_directorio)) {
             return renombrarCarpeta(parametro1, parametro2);
@@ -386,6 +439,9 @@ public class Comandos {
     public String ejecutarComado(String comando, String nombre) {
         if (comando.equals(this.crear_directorio)) {
             return crearCarpeta(nombre);
+        } else if (comando.equals(this.editar_contenido_archivo)) {
+            String arContent = getContentArchivo(nombre);
+            return arContent;
         } else if (comando.equals(this.crear_archivo)) {
             return crearArchivo(nombre);
         } else if (comando.equals(this.eliminar_directorio)) {

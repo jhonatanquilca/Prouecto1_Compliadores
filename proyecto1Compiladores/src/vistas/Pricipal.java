@@ -20,11 +20,11 @@ public class Pricipal extends javax.swing.JFrame {
      */
     Comandos cmdos = new Comandos();
     String comando = "";
+    boolean onEdit = false;
 
     public Pricipal() {
         initComponents();
         txtAreaConsola.setText(cmdos.getDirectorioActual() + ">");
-        
 
     }
 
@@ -170,7 +170,7 @@ public class Pricipal extends javax.swing.JFrame {
     private void txtAreaConsolaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAreaConsolaKeyPressed
         // TODO add your handling code here:
         String letra = evt.getKeyChar() + "";
-//        System.out.println(evt.getExtendedKeyCode());
+        System.out.println(evt.getExtendedKeyCode());
         String respuesta = "";
         if (evt.getExtendedKeyCode() == 10) {
 //            System.out.print(cmdos.getDirectorioActual() + ">");
@@ -186,7 +186,7 @@ public class Pricipal extends javax.swing.JFrame {
                     respuesta = cmdos.ejecutarComado(comandoCompleto[0]);
                     if (respuesta.equals(cmdos.getLimpiar_pantalla())) {
                         txtAreaConsola.setText(null);
-                        System.out.println("entro");
+//                        System.out.println("entro");
                     } else if (!respuesta.equals("")) {
 
                         txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
@@ -196,8 +196,11 @@ public class Pricipal extends javax.swing.JFrame {
                     break;
                 case 2:
                     respuesta = cmdos.ejecutarComado(comandoCompleto[0], comandoCompleto[1]);
-                    if (!respuesta.equals("")) {
 
+                    if (comandoCompleto[0].equals(cmdos.getEditar_contenido_archivo())) {
+                        onEdit = true;
+                        txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+                    } else if (!respuesta.equals("")) {
                         txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
                     }
 
@@ -218,13 +221,16 @@ public class Pricipal extends javax.swing.JFrame {
             comando = "";
             if (comando.equals("")) {
                 String textoAnteriro = txtAreaConsola.getText();
-
-                txtAreaConsola.setText(textoAnteriro + (!textoAnteriro.equals("")?"\n":"") + cmdos.getDirectorioActual() + ">");
+                if (!onEdit) {
+                    txtAreaConsola.setText(textoAnteriro + (!textoAnteriro.equals("") ? "\n" : "") + cmdos.getDirectorioActual() + ">");
+                }
             }
 
             int cartet = txtAreaConsola.getText().lastIndexOf("");
-            txtAreaConsola.setCaretPosition(cartet + 1);
+            if (!onEdit) {
 
+                txtAreaConsola.setCaretPosition(cartet + 1);
+            }
 
         }
 //        else if (!letra.equals("") && evt.getExtendedKeyCode() != 8 && !letra.equals("￿")) {
