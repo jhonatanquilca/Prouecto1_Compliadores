@@ -21,6 +21,7 @@ public class Pricipal extends javax.swing.JFrame {
     Comandos cmdos = new Comandos();
 
     String comando = "";
+    
     boolean onEdit = false;
 
     public Pricipal() {

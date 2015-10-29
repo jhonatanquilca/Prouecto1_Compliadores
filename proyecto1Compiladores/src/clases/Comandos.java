@@ -388,48 +388,50 @@ public class Comandos {
         archivo = new File(this.getDirectorioActual() + "\\" + nombre);
         System.out.println(archivo.getAbsolutePath());
         if (archivo.exists()) {
+            String texto = "";
             try {
 
-                File archivo = null;
                 FileReader fr = null;
                 BufferedReader br = null;
 
-//                try {
-//         // Apertura del fichero y creacion de BufferedReader para poder
-//                    // hacer una lectura comoda (disponer del metodo readLine()).
-//                    archivo = new File("C:\\archivo.txt");
-//                    fr = new FileReader(archivo);
-//                    br = new BufferedReader(fr);
-//
-//                    // Lectura del fichero
-//                    String linea;
-//                    while ((linea = br.readLine()) != null) {
-//                        System.out.println(linea);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                } finally {
-//         // En el finally cerramos el fichero, para asegurarnos
-//                    // que se cierra tanto si todo va bien como si salta 
-//                    // una excepcion.
-//                    try {
-//                        if (null != fr) {
-//                            fr.close();
-//                        }
-//                    } catch (Exception e2) {
-//                        e2.printStackTrace();
-//                    }
-//                }
+                try {
+         // Apertura del fichero y creacion de BufferedReader para poder
+                    // hacer una lectura comoda (disponer del metodo readLine()).
 
-                System.out.println(archivo.toString());
-                BufferedReader bf = new BufferedReader(new FileReader(archivo));
-                String sCadena = "";
-                while ((sCadena = bf.readLine()) != null) {
+                    fr = new FileReader(archivo);
+                    br = new BufferedReader(fr);
 
-                    sCadena += sCadena + "";
+                    // Lectura del fichero
+                       String linea;
+                    while ((linea = br.readLine()) != null) {
+                        System.out.println(linea);
+                        texto=linea;
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } finally {
+                    // En el finally cerramos el fichero, para asegurarnos
+                    // que se cierra tanto si todo va bien como si salta 
+                    // una excepcion.
+                    try {
+                        if (null != fr) {
+                            fr.close();
+                        }
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
+                    }
                 }
-                bf.close();
+                
 
+//                System.out.println(archivo.toString());
+//                BufferedReader bf = new BufferedReader(new FileReader(archivo));
+//                String sCadena = "";
+//                while ((sCadena = bf.readLine()) != null) {
+//
+//                    sCadena += sCadena + "";
+//                }
+//                bf.close();
 //                if (sCadena.equals("")) {
 //                    return "Presione Clt+g para guardar.\n"
 //                            + "Presione Clt+X para salir sin guardar.\n"
@@ -437,7 +439,7 @@ public class Comandos {
 //                } else {
                 return "Presione Clt+g para guardar.\n"
                         + "Presione Clt+X para salir sin guardar.\n"
-                        + "---------------------------\n" + sCadena;
+                        + "---------------------------\n" + texto;
 //                }
 
             } catch (NullPointerException e) {
