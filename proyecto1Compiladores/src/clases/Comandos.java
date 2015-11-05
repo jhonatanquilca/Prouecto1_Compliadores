@@ -50,6 +50,9 @@ public class Comandos {
     String buscar_archivo = "brAr";
     String editar_contenido_archivo = "editAr";
 
+    String si = "s";
+    String no = "n";
+
     public String getEditar_contenido_archivo() {
         return editar_contenido_archivo;
     }
@@ -226,9 +229,12 @@ public class Comandos {
     }
 
     public String avanzarUnDirectorio(String nombre) {
+
         carpeta = new File(getDirectorioActual() + "\\" + nombre);
         String direccion = getDirectorioActual();
-        if (carpeta.exists()) {
+        if (nombre.contains(".txt") && carpeta.isFile()) {
+            return "El directorio al que trata de acceder no existe.";
+        } else if (carpeta.exists()) {
             setDirectorioActual(carpeta.getAbsolutePath());
 //            return getDirectorioActual();
             return "";
@@ -303,7 +309,8 @@ public class Comandos {
 
     }
 
-    public void editarArchivo(String nombre, String texto) {
+    public String editarArchivo(String nombre, String texto) {
+        System.out.println(texto);
         if (!nombre.contains(".txt")) {
             nombre = nombre + ".txt";
         }
@@ -311,13 +318,23 @@ public class Comandos {
             File archivo = new File(getDirectorioActual() + "\\" + nombre);
             BufferedWriter bw;
             bw = new BufferedWriter(new FileWriter(archivo));
-            bw.write(texto);
+            System.out.println(texto);
+            String[] text = texto.split("\n");
+            for (String text1 : text) {
+                bw.write(text1);
+                bw.newLine();
+            }
+//            bw.write(texto);
             bw.close();
             System.out.println("Archivo Editado");
+            return "El archivo " + nombre + " se guardo con exito.";
         } catch (FileNotFoundException fe) {
             System.out.println("error al editar el archivo ! " + fe.getMessage());
+            return "error al editar el archivo ! " + fe.getMessage();
         } catch (IOException ex) {
             Logger.getLogger(Comandos.class.getName()).log(Level.SEVERE, null, ex);
+            return "error al editar el archivo ! ";
+
         }
     }
 
@@ -395,56 +412,41 @@ public class Comandos {
                 BufferedReader br = null;
 
                 try {
-         // Apertura del fichero y creacion de BufferedReader para poder
+                    // Apertura del fichero y creacion de BufferedReader para poder
                     // hacer una lectura comoda (disponer del metodo readLine()).
 
                     fr = new FileReader(archivo);
                     br = new BufferedReader(fr);
 
                     // Lectura del fichero
-                       String linea;
+                    String linea;
                     while ((linea = br.readLine()) != null) {
                         System.out.println(linea);
-                        texto=linea;
+                        texto += linea + "\n";
 
                     }
+                    br.close();
                 } catch (Exception e) {
                     e.printStackTrace();
+                    texto = "error";
                 } finally {
-                    // En el finally cerramos el fichero, para asegurarnos
-                    // que se cierra tanto si todo va bien como si salta 
-                    // una excepcion.
+
                     try {
                         if (null != fr) {
                             fr.close();
                         }
+
                     } catch (Exception e2) {
                         e2.printStackTrace();
+                        texto = "error";
                     }
                 }
-                
-
-//                System.out.println(archivo.toString());
-//                BufferedReader bf = new BufferedReader(new FileReader(archivo));
-//                String sCadena = "";
-//                while ((sCadena = bf.readLine()) != null) {
-//
-//                    sCadena += sCadena + "";
-//                }
-//                bf.close();
-//                if (sCadena.equals("")) {
-//                    return "Presione Clt+g para guardar.\n"
-//                            + "Presione Clt+X para salir sin guardar.\n"
-//                            + "---------------------------";
-//                } else {
-                return "Presione Clt+g para guardar.\n"
-                        + "Presione Clt+X para salir sin guardar.\n"
+                return "Presione Clt+x para salir del modo edición.\n"
                         + "---------------------------\n" + texto;
 //                }
 
             } catch (NullPointerException e) {
-                return "Presione Clt+g para guardar.\n"
-                        + "Presione Clt+X para salir sin guardar.\n"
+                return "Presione Clt+x para salir del modo edición.\n"
                         + "---------------------------";
             } catch (Exception e) {
                 e.printStackTrace();
@@ -459,10 +461,14 @@ public class Comandos {
     public String ejecutarComado(String comando, String parametro1, String parametro2) {
         if (comando.equals(this.renombrar_directorio)) {
             return renombrarCarpeta(parametro1, parametro2);
+        } else if (comando.equals(this.si)) {
+            return editarArchivo(parametro1, parametro2);
+        } else if (comando.equals(this.no)) {
+            return "No se efectuaron cambios en el archivo " + parametro1;
         } else if (comando.equals(this.renombrar_archivo)) {
             return renombrarArchivo(parametro1, parametro2);
         } else {
-            System.out.println("\"" + comando + " " + parametro1 + " " + parametro1 + "\" no se reconoce como un comando o no es correcto.");
+//            System.out.println("\"" + comando + " " + parametro1 + " " + parametro1 + "\" no se reconoce como un comando o no es correcto.");
             return "\"" + comando + " " + parametro1 + " " + parametro1 + "\" no se reconoce como un comando o no es correcto.";
         }
     }
@@ -510,6 +516,10 @@ public class Comandos {
             System.out.println();
             return "\"" + comando + "\" no se reconoce como un comando.";
         }
+    }
+
+    public String decicion() {
+        return "Guardar cambios?[s/n]>";
     }
 
 }

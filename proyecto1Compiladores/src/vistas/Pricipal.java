@@ -7,6 +7,7 @@ package vistas;
 
 import clases.Comandos;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import javax.swing.JTextArea;
 
 /**
@@ -21,7 +22,8 @@ public class Pricipal extends javax.swing.JFrame {
     Comandos cmdos = new Comandos();
 
     String comando = "";
-    
+    String nombreArchivo = "";
+
     boolean onEdit = false;
 
     public Pricipal() {
@@ -170,30 +172,91 @@ public class Pricipal extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txtAreaConsolaKeyTyped
 
+    boolean swcontrol = false;
+    boolean swshift = false;
     private void txtAreaConsolaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAreaConsolaKeyPressed
         // TODO add your handling code here:
+
         String letra = evt.getKeyChar() + "";
         System.out.println(evt.getExtendedKeyCode());
         String respuesta = "";
-        if (evt.getExtendedKeyCode() == 10) {
+
+        if (evt.getExtendedKeyCode() == 17) {
+            System.out.println("clt");
+            swcontrol = true;
+        }
+
+        if (onEdit && (swcontrol && evt.getExtendedKeyCode() == 88)) {
+            System.out.println("ctl+x");
+//            while (onEdit) {
+            respuesta = cmdos.decicion();
+//                System.out.println(respuesta +" "+onEdit);
+            txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+
+//                switch (comandoCompleto.length) {
+//                    case 1:
+//                        if (comandoCompleto[0].equals("")) {
+//                            break;
+//                        }
+//                        respuesta = cmdos.ejecutarComado(comandoCompleto[0], nombreArchivo, txtAreaConsola.getText().substring(txtAreaConsola.getText().lastIndexOf("-") + 1, txtAreaConsola.getText().lastIndexOf("G")));
+//                        if (!respuesta.equals("")) {
+//                            txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+//                            onEdit = false;
+//
+//                        }
+//
+//                        break;
+//                }
+////            }
+            swcontrol = false;
+
+        } else if (evt.getExtendedKeyCode() == 10) {
 //            System.out.print(cmdos.getDirectorioActual() + ">");
             comando = txtAreaConsola.getText().substring(txtAreaConsola.getText().lastIndexOf(">") + 1, txtAreaConsola.getText().length());
             String entradaTeclado = comando; //Invocamos un método sobre un objeto Scanner
             String[] comandoCompleto = entradaTeclado.split(" ");
-//            System.out.println(comandoCompleto.length);
+//            System.out.println(comandoCompleto.length + " aaaaaaa");
             switch (comandoCompleto.length) {
                 case 1:
-                    if (comandoCompleto[0].equals("")) {
+                    if (onEdit && !nombreArchivo.equals("")) {
+
+                        if (comandoCompleto[0].equals("")) {
+//                            System.out.println("bbbbbb");
+                            respuesta = cmdos.decicion();
+                            txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+                            int cartet = txtAreaConsola.getText().lastIndexOf("");
+                            txtAreaConsola.setCaretPosition(cartet + 1);
+                            break;
+                        } else {
+
+//                            System.out.println(txtAreaConsola.getText().lastIndexOf("-"));
+//                            System.out.println(txtAreaConsola.getText().indexOf("G"));
+//                            System.out.println(txtAreaConsola.getText().length());
+//                            System.out.println(respuesta);
+//                            System.out.println(txtAreaConsola.getText());
+                            respuesta = cmdos.ejecutarComado(comandoCompleto[0], nombreArchivo, txtAreaConsola.getText().substring(txtAreaConsola.getText().lastIndexOf("-") + 2, txtAreaConsola.getText().lastIndexOf("G")));
+                            txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
+                            onEdit = false;
+                            break;
+                        }
+
+                    } else if (comandoCompleto[0].equals("")) {
+                        System.out.println("vacio");
                         break;
                     }
                     respuesta = cmdos.ejecutarComado(comandoCompleto[0]);
                     if (respuesta.equals(cmdos.getLimpiar_pantalla())) {
                         txtAreaConsola.setText(null);
+                        System.out.println("dddddd");
+                        break;
 //                        System.out.println("entro");
                     } else if (!respuesta.equals("")) {
+//                        System.out.println("eeeee");
 
                         txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + respuesta);
 
+                    } else {
+//                        System.out.println("ffffffffff");
                     }
 
                     break;
@@ -202,6 +265,7 @@ public class Pricipal extends javax.swing.JFrame {
 
                     if (comandoCompleto[0].equals(cmdos.getEditar_contenido_archivo()) && !respuesta.equals("El archivo que quiere editar no existe.")) {
                         onEdit = true;
+                        nombreArchivo = comandoCompleto[1];
 //                        System.out.println("entro");
                         String resp = respuesta.equals("null") ? "" : respuesta;
                         txtAreaConsola.setText(txtAreaConsola.getText() + "\n" + resp);
